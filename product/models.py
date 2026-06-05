@@ -17,6 +17,8 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=8, decimal_places=2)
     active = models.BooleanField(default=True)
     categories = models.ManyToManyField(Category, related_name='products')
+    class Meta:
+        ordering = ['id']
 
     def __str__(self):
         return self.title
