@@ -1,0 +1,30 @@
+name: Django CI
+
+on:
+  push:
+    branches:
+      - add-github-actions
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build containers
+        run: docker compose build
+
+      - name: Start database
+        run: docker compose up -d db
+
+      - name: Wait for database
+        run: sleep 10
+
+      - name: Run migrations
+        run: docker compose run --rm web python manage.py migrate
+
+      - name: Run tests
+        run: docker compose run --rm web python manage.py test
