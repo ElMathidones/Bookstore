@@ -17,6 +17,12 @@ jobs:
       - name: Build containers
         run: docker compose build
 
+      - name: Start database
+        run: docker compose up -d db
+
+      - name: Wait for database
+        run: sleep 10
+
       - name: Run migrations
         run: docker compose run --rm web python manage.py migrate
 
