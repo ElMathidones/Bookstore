@@ -5,7 +5,7 @@ description = "Bookstore API"
 authors = ["Daniel Santos <drsantos20@gmail.com>"]
 
 [tool.poetry.dependencies]
-python = ">=3.10,<3.11"
+python = ">=3.10,<3.12"
 Django = "^3.2.8"
 djangorestframework = "<3.15"
 
