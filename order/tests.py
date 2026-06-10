@@ -1,6 +1,10 @@
 from django.contrib.auth.models import User
 from django.test import TestCase
 
+from rest_framework import status
+from rest_framework.authtoken.models import Token
+from rest_framework.test import APIClient
+
 from product.models import Category, Product
 from .models import Order
 from .serializers import OrderSerializer
@@ -44,9 +48,6 @@ class OrderSerializerTest(TestCase):
         )
 
 
-from rest_framework import status
-from rest_framework.test import APIClient
-
 class OrderViewSetTest(TestCase):
     def setUp(self):
         self.client = APIClient()
@@ -54,6 +55,11 @@ class OrderViewSetTest(TestCase):
         self.user = User.objects.create_user(
             username='mathias',
             password='123456'
+        )
+
+        self.token = Token.objects.create(user=self.user)
+        self.client.credentials(
+            HTTP_AUTHORIZATION='Token ' + self.token.key
         )
 
         self.category = Category.objects.create(
@@ -97,4 +103,4 @@ class OrderViewSetTest(TestCase):
             format='json'
         )
 
-        self.assertEqual(response.status_code, 201)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
